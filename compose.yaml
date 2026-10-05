@@ -1,0 +1,19 @@
+name: paypal-service-twin
+
+services:
+  paypal-twin-api:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: node src/server.mjs
+    environment:
+      PORT: "8793"
+    ports:
+      - "8793:8793"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8793/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
